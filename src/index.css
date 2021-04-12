@@ -1,0 +1,20 @@
+body {
+    margin: 20px;
+    font-family: sans-serif;
+
+}
+
+button {
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    background-color: #32A03C;
+    color: #fff;
+    padding: 12px 24px;
+    -webkit-appearance: none;
+    outline: none;
+}
+
+button:disabled {
+    opacity: .7;
+}
