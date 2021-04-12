@@ -27,8 +27,6 @@ function FileDownload() {
       <p>Скачан {count} раз</p>
     </div>
   )
-
-
 }
 
 
