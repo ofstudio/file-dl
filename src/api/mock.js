@@ -2,10 +2,21 @@ function getFile() {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve(response)
-    }, 2000 + Math.random() * 5)
+    }, 2000 + Math.random() * 3000)
   })
 }
 
+
+/*
+
+Важно! Для корректной работы в iOS, при создании блоба
+параметр `type` должен содержать указание кодировки `charset=utf-8`:
+
+  new Blob(data, {type: "application/pdf;charset=utf-8"})
+
+Если реальное API не возвращает `charset` в составе ответа,
+то его нужно добавлять перед созданием блоба.
+*/
 const response = {
   fileName: "cat.pdf",
   contentType: "application/pdf;charset=utf-8",
