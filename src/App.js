@@ -1,9 +1,7 @@
 import FileDownload from "./FileDownload"
 
-function App() {
+export default function App() {
   return (
     <FileDownload/>
   )
 }
-
-export default App

@@ -1,52 +1,34 @@
 import {useEffect, useState} from "react"
 import {saveAs} from 'file-saver'
-import getFile from "./api/mock"
+import requestFile from "./api"
+import base64toBlob from "./base64toBlob";
 
-function FileDownload() {
-  const [downloading, setDownloading] = useState(false)
+export default function FileDownload() {
   const [count, setCount] = useState(0)
+  const [downloading, setDownloading] = useState(false)
+  const [noOpenIos, setNoOpenIos] = useState(false)
+  const toggleNoOpenIos = () => setNoOpenIos(!noOpenIos)
 
   useEffect(() => {
     if (downloading) {
-      getFile()
-        .then(response => {
-          saveAs(base64toBlob(response.fileDataBase64, response.contentType), response.fileName)
+      requestFile()
+        .then(res => {
+          const contentType = noOpenIos ? res.contentType + ';charset=utf-8' : res.contentType
+          saveAs(base64toBlob(res.base64Data, contentType), res.fileName)
           setDownloading(false)
           setCount(c => c + 1)
         })
     }
-  }, [downloading])
+  }, [downloading, noOpenIos])
 
   return (
     <div>
-      {downloading ? (
-        <button disabled>Скачивается...</button>
-      ) : (
-        <button onClick={() => setDownloading(true)}>Скачать файл</button>
-      )}
-      <p>Скачан {count} раз</p>
+      <input onClick={toggleNoOpenIos} checked={noOpenIos} disabled={downloading} type="checkbox" id="no-open-ios"/>
+      <label htmlFor="no-open-ios">Скачать, но не открывать <small>(для Safari / iOS)</small></label>
+      <button onClick={() => setDownloading(true)} disabled={downloading}>
+        {downloading ? 'Скачивается…' : 'Скачать файл'}
+      </button>
+      <p>Файл скачан {count} раз</p>
     </div>
   )
 }
-
-
-function base64toBlob(base64data, contentType = '', sliceSize = 512) {
-  const byteCharacters = atob(base64data)
-  const byteArrays = []
-
-  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-    const slice = byteCharacters.slice(offset, offset + sliceSize)
-
-    const byteNumbers = new Array(slice.length)
-    for (let i = 0; i < slice.length; i++) {
-      byteNumbers[i] = slice.charCodeAt(i)
-    }
-
-    const byteArray = new Uint8Array(byteNumbers)
-    byteArrays.push(byteArray)
-  }
-
-  return new Blob(byteArrays, {type: contentType})
-}
-
-export default FileDownload

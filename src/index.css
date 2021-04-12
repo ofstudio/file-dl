@@ -5,6 +5,8 @@ body {
 }
 
 button {
+    margin: 20px 0;
+    display: block;
     font-size: 16px;
     border: none;
     border-radius: 8px;
@@ -17,4 +19,8 @@ button {
 
 button:disabled {
     opacity: .7;
+}
+
+label {
+    margin-left: 4px;
 }
