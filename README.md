@@ -8,12 +8,22 @@
 ```json
 {
   "fileName": "cat.pdf",
-  "contentType": "application/pdf",
+  "contentType": "application/pdf;charset=utf-8",
   "fileDataBase64": "<<содержимое файла в Base64>>"
 }
 ```
 
 Base64-данные из ответа преобразуются в Blob, который скачивается браузером на устройство пользователя.
+
+**Важно!** Для корректной работы в iOS, при создании блоба 
+параметр `type` должен содержать указание кодировки `charset=utf-8`:
+
+```js
+new Blob(data, {type: "application/pdf;charset=utf-8"})
+```
+
+Если реальное API не возвращает `charset` в составе ответа, 
+то его нужно добавлять перед созданием блоба.
 
 ## Реализация 
 
