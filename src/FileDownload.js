@@ -12,10 +12,10 @@ function FileDownload() {
         .then(response => {
           saveAs(base64toBlob(response.fileDataBase64, response.contentType), response.fileName)
           setDownloading(false)
-          setCount(count + 1)
+          setCount(c => c + 1)
         })
     }
-  })
+  }, [downloading])
 
   return (
     <div>
